@@ -2,15 +2,16 @@ package com.securemessenger
 
 import android.app.*
 import com.securemessenger.di.appModule
-import net.zetetic.database.sqlcipher.*
+import net.zetetic.database.sqlcipher.SQLiteDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
-//@HiltAndroidApp
+//Точка старта проекта
 class SecureMessenger : Application() {
     override fun onCreate() {
         super.onCreate()
-        initializeSQLCipher();
+        SQLiteDatabase.loadLibs(this)
+        initializeSQLCipher()
 
         startKoin {
             androidContext(this@SecureMessenger)
@@ -19,9 +20,9 @@ class SecureMessenger : Application() {
     }
 
     private fun initializeSQLCipher() {
-        System.loadLibrary("sqlcipher")
+        //System.loadLibrary("sqlcipher")
         val databaseFile = getDatabasePath("test.db")
-        databaseFile.mkdirs()
+        databaseFile.parentFile?.mkdirs()
 
         val password = "super_secret_password"
 
